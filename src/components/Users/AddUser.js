@@ -3,7 +3,7 @@ import Card from "../UI/Card";
 import classes from "./AddUser.module.css";
 import Button from "../UI/Button";
 
-const AddUser = () => {
+const AddUser = (props) => {
   const [enteredUsername, setEnteredUsername] = useState("");
   const [enteredAge, setEnteredAge] = useState("");
   /*
@@ -25,7 +25,7 @@ const AddUser = () => {
       return;
     }
 
-    //console.log(enteredUsername, enteredAge);
+    props.onAddUser(enteredUsername, enteredAge); // with this line of code we forward the data to the App component upon every click.
 
     setEnteredUsername("");
     setEnteredAge("");
