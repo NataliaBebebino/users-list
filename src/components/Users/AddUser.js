@@ -7,6 +7,7 @@ import ErrorModal from "../UI/ErrorModal";
 const AddUser = (props) => {
   const [enteredUsername, setEnteredUsername] = useState("");
   const [enteredAge, setEnteredAge] = useState("");
+  const [error, setError] = useState();
   /*
   In case you don't want to use array destructuring: 
   const ageUseState = useState("");
@@ -19,11 +20,19 @@ const AddUser = (props) => {
 
     // Here I make sure that both fields of the form are filled out
     if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+      setError({
+        title: "Invalid input",
+        message: "Please enter a valid name and age (non-empty values).",
+      });
       return;
     }
 
     if (+enteredAge < 1) {
       // with the "+" +enteredAge I force the variable enteredAge to convert to a number because actually, it is a string
+      setError({
+        title: "Invalid age",
+        message: "Please enter a valid age (> 0).",
+      });
       return;
     }
 
@@ -41,9 +50,13 @@ const AddUser = (props) => {
     setEnteredAge(event.target.value);
   };
 
+  const errorHandler = () => {
+    setError(null); // the idea is to set error to null/ undefined, so that it becomes a falsy value and then the ErrorModal is not displayed.
+  }
+
   return (
     <div>
-      <ErrorModal title="An error occured!" message="Something went wrong!" />
+      {error && <ErrorModal title={error.title} message={error.message} onConfirm={errorHandler}/>} {/*Remember that in this &&, if the first argument is truthy, then it returns the second argument. */}
       <Card className={classes.input}>
         {/* This className here is not coming from the usual attributes of the HTML tags because Card is a customized tag, it's our tag where we defined the className props */}
         <form onSubmit={addUserHandler}>
